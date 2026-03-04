@@ -90,9 +90,16 @@ app.get('/debug', async (req, res) => {
     }
 });
 
-// Landing Page
-app.get('/', requireAuth, async (req, res) => {
+// Landing Page / Dashboard
+app.get('/', async (req, res) => {
     const user = (req.session as any).user;
+
+    // Not logged in -> Show the brand new Landing Page
+    if (!user) {
+        return res.render('landing', { user: null });
+    }
+
+    // Logged in -> Show the Unified Search Dashboard
     let recentSlackMessages = null;
 
     if (user.slack_access_token) {

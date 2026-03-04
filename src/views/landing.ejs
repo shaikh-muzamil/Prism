@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prism - The Unified Knowledge Hub</title>
+    <link rel="stylesheet" href="/style.css">
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+    <style>
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 60px;
+            margin-bottom: 80px;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background Effects -->
+    <div class="bg-glow"></div>
+    <div class="bg-glow-2"></div>
+
+    <header>
+        <div class="container flex items-center justify-between">
+            <a href="/" class="font-heading font-bold text-xl flex items-center gap-2"
+                style="color: white; text-decoration: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" style="color: var(--coral-bright);">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                Prism
+            </a>
+            <div class="flex items-center gap-6">
+                <a href="/login"
+                    style="color: var(--text-secondary); text-decoration: none; font-weight: 500;">Login</a>
+                <a href="/signup" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">Sign Up</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content container">
+        <section class="hero">
+            <h1 class="text-gradient">Connect your scattered knowledge</h1>
+            <p>
+                Prism brings your Slack conversations and Notion documents into one powerful, unified search experience.
+                Stop digging, start finding.
+            </p>
+            <div class="flex items-center justify-center gap-4">
+                <a href="/signup" class="btn btn-primary" style="font-size: 1.1rem; padding: 16px 32px;">Get Started for
+                    Free</a>
+            </div>
+        </section>
+
+        <section class="features-grid">
+            <div class="card-glass text-center">
+                <span class="feature-icon">💬</span>
+                <h3 class="font-heading mb-4" style="font-size: 1.5rem;">Slack Integration</h3>
+                <p class="text-secondary">Instantly search through your DMs and channels. Never lose a crucial message
+                    or link again.</p>
+            </div>
+
+            <div class="card-glass text-center">
+                <span class="feature-icon">📝</span>
+                <h3 class="font-heading mb-4" style="font-size: 1.5rem;">Notion Integration</h3>
+                <p class="text-secondary">Find any document, page, or table across your entire Notion workspace with
+                    blazing fast speed.</p>
+            </div>
+
+            <div class="card-glass text-center">
+                <span class="feature-icon">⚡</span>
+                <h3 class="font-heading mb-4" style="font-size: 1.5rem;">Unified Experience</h3>
+                <p class="text-secondary">One beautifully crafted interface to rule them all. Switch context less, get
+                    more done.</p>
+            </div>
+        </section>
+
+        <footer class="text-center text-muted"
+            style="padding-top: 40px; border-top: 1px solid var(--border-subtle); margin-bottom: 40px;">
+            <p>&copy; 2026 Prism. Built with ♥️.</p>
+        </footer>
+    </main>
+</body>
+
+</html>
