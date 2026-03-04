@@ -2,34 +2,39 @@
 
 :root {
     /* OpenClaw Inspired Dark Theme */
-    --bg-base: #050810;     /* Deep Space Black */
-    --bg-elevated: #111520; /* Slightly lighter for cards */
-    --bg-overlay: rgba(17, 21, 32, 0.7); /* For glassmorphism */
-    
+    --bg-base: #050810;
+    /* Deep Space Black */
+    --bg-elevated: #111520;
+    /* Slightly lighter for cards */
+    --bg-overlay: rgba(17, 21, 32, 0.7);
+    /* For glassmorphism */
+
     --text-primary: #FFFFFF;
-    --text-secondary: #9CA3AF; /* Muted Grey */
+    --text-secondary: #9CA3AF;
+    /* Muted Grey */
     --text-muted: #6B7280;
-    
+
     --coral-bright: #FF4D4D;
     --coral-dark: #cc3d3d;
     --cyan-bright: #00E5CC;
     --cyan-dark: #00b3a0;
     --accent-mixed: linear-gradient(135deg, var(--coral-bright) 0%, var(--cyan-bright) 100%);
-    
+
     --border-subtle: rgba(255, 255, 255, 0.1);
     --border-highlight: rgba(255, 255, 255, 0.2);
-    --border-accent: rgba(255, 77, 77, 0.5); /* Coral glow border */
-    
+    --border-accent: rgba(255, 77, 77, 0.5);
+    /* Coral glow border */
+
     /* Effects */
     --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.3);
     --shadow-glow: 0 0 20px rgba(255, 77, 77, 0.15);
     --shadow-glow-hover: 0 0 30px rgba(255, 77, 77, 0.3);
-    
+
     --radius-sm: 8px;
     --radius-md: 16px;
     --radius-lg: 24px;
     --radius-pill: 50px;
-    
+
     /* Typography */
     --font-heading: 'Outfit', sans-serif;
     --font-body: 'Inter', sans-serif;
@@ -56,16 +61,31 @@ body {
 }
 
 /* Typography Utilities */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: var(--font-heading);
     color: var(--text-primary);
     font-weight: 700;
     line-height: 1.2;
 }
 
-h1 { font-size: clamp(2.5rem, 6vw, 4rem); letter-spacing: -0.03em; }
-h2 { font-size: clamp(2rem, 4vw, 2.5rem); letter-spacing: -0.02em; }
-h3 { font-size: 1.5rem; }
+h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    letter-spacing: -0.03em;
+}
+
+h2 {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    letter-spacing: -0.02em;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
 
 .text-gradient {
     background: linear-gradient(135deg, var(--coral-bright) 0%, #FFA800 100%);
@@ -74,12 +94,29 @@ h3 { font-size: 1.5rem; }
     background-clip: text;
 }
 
-.text-secondary { color: var(--text-secondary); }
-.text-muted { color: var(--text-muted); }
-.text-center { text-align: center; }
-.font-heading { font-family: var(--font-heading); }
-.font-semibold { font-weight: 600; }
-.text-sm { font-size: 0.875rem; }
+.text-secondary {
+    color: var(--text-secondary);
+}
+
+.text-muted {
+    color: var(--text-muted);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.font-heading {
+    font-family: var(--font-heading);
+}
+
+.font-semibold {
+    font-weight: 600;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+}
 
 a {
     color: var(--cyan-bright);
@@ -96,7 +133,8 @@ a:hover {
 .container {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding-left: 24px;
+    padding-right: 24px;
     width: 100%;
 }
 
@@ -109,25 +147,77 @@ a:hover {
     z-index: 10;
 }
 
-.flex { display: flex; }
-.flex-col { flex-direction: column; }
-.items-center { align-items: center; }
-.justify-between { justify-content: space-between; }
-.justify-center { justify-content: center; }
-.gap-2 { gap: 8px; }
-.gap-3 { gap: 12px; }
-.gap-4 { gap: 16px; }
-.gap-6 { gap: 24px; }
-.gap-8 { gap: 32px; }
+.flex {
+    display: flex;
+}
 
-.mt-4 { margin-top: 16px; }
-.mt-8 { margin-top: 32px; }
-.mb-2 { margin-bottom: 8px; }
-.mb-4 { margin-bottom: 16px; }
-.mb-6 { margin-bottom: 24px; }
-.mb-8 { margin-bottom: 32px; }
-.mb-12 { margin-bottom: 48px; }
-.w-full { width: 100%; }
+.flex-col {
+    flex-direction: column;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.gap-2 {
+    gap: 8px;
+}
+
+.gap-3 {
+    gap: 12px;
+}
+
+.gap-4 {
+    gap: 16px;
+}
+
+.gap-6 {
+    gap: 24px;
+}
+
+.gap-8 {
+    gap: 32px;
+}
+
+.mt-4 {
+    margin-top: 16px;
+}
+
+.mt-8 {
+    margin-top: 32px;
+}
+
+.mb-2 {
+    margin-bottom: 8px;
+}
+
+.mb-4 {
+    margin-bottom: 16px;
+}
+
+.mb-6 {
+    margin-bottom: 24px;
+}
+
+.mb-8 {
+    margin-bottom: 32px;
+}
+
+.mb-12 {
+    margin-bottom: 48px;
+}
+
+.w-full {
+    width: 100%;
+}
 
 /* Glassmorphism & Cards */
 .card {
@@ -257,14 +347,33 @@ input:focus {
     font-family: var(--font-heading);
 }
 
-.badge-slack { background: rgba(55, 48, 163, 0.3); color: #818CF8; border: 1px solid rgba(129, 140, 248, 0.3); }
-.badge-notion { background: rgba(107, 33, 168, 0.3); color: #D8B4FE; border: 1px solid rgba(216, 180, 254, 0.3); }
-.badge-success { background: rgba(6, 95, 70, 0.3); color: #34D399; border: 1px solid rgba(52, 211, 153, 0.3); }
-.badge-error { background: rgba(153, 27, 27, 0.3); color: #F87171; border: 1px solid rgba(248, 113, 113, 0.3); }
+.badge-slack {
+    background: rgba(55, 48, 163, 0.3);
+    color: #818CF8;
+    border: 1px solid rgba(129, 140, 248, 0.3);
+}
+
+.badge-notion {
+    background: rgba(107, 33, 168, 0.3);
+    color: #D8B4FE;
+    border: 1px solid rgba(216, 180, 254, 0.3);
+}
+
+.badge-success {
+    background: rgba(6, 95, 70, 0.3);
+    color: #34D399;
+    border: 1px solid rgba(52, 211, 153, 0.3);
+}
+
+.badge-error {
+    background: rgba(153, 27, 27, 0.3);
+    color: #F87171;
+    border: 1px solid rgba(248, 113, 113, 0.3);
+}
 
 /* Navigation */
 header {
-    padding: 24px 0;
+    padding: 48px 0 24px;
     position: relative;
     z-index: 20;
 }
@@ -291,9 +400,10 @@ nav .logo {
     max-width: 680px;
     margin: 0 auto;
     position: relative;
-    padding: 4px; /* Space for glowing border */
+    padding: 4px;
+    /* Space for glowing border */
     border-radius: var(--radius-pill);
-    background: linear-gradient(135deg, rgba(255,77,77,0.2) 0%, rgba(0,229,204,0.2) 100%);
+    background: linear-gradient(135deg, rgba(255, 77, 77, 0.2) 0%, rgba(0, 229, 204, 0.2) 100%);
     box-shadow: var(--shadow-glow);
 }
 
@@ -328,7 +438,7 @@ nav .logo {
     transform: translateX(-50%);
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(255,77,77,0.08) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 77, 77, 0.08) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
 }
@@ -339,7 +449,7 @@ nav .logo {
     right: -200px;
     width: 800px;
     height: 800px;
-    background: radial-gradient(circle, rgba(0,229,204,0.05) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0, 229, 204, 0.05) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
 }
