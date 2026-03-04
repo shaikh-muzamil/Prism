@@ -6,7 +6,15 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+let connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL || process.env.NeonDB;
+
+// If the connection string is a psql command (like "psql 'postgresql://...'"), extract just the URL
+if (connectionString && connectionString.startsWith("psql '")) {
+    const match = connectionString.match(/'(postgresql:\/\/[^']+)'/);
+    if (match && match[1]) {
+        connectionString = match[1];
+    }
+}
 
 if (!connectionString) {
     console.warn('WARNING: Database connection string is missing. Application will try to connect to localhost (which may fail on Vercel).');
