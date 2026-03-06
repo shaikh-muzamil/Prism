@@ -10,8 +10,10 @@ import { searchNotion } from './services/notion';
 import { searchGoogleDrive } from './services/googleDrive';
 import axios from 'axios';
 
-// Explicitly load .env
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+// Load .env only in local development
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+    dotenv.config({ path: path.resolve(__dirname, '../.env') });
+}
 
 const PgSession = connectPgSimple(session);
 const app = express();
