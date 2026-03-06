@@ -323,17 +323,33 @@ app.get('/auth/google', (req, res) => {
     const redirectUri = (process.env.GOOGLE_REDIRECT_URI || '').trim();
 
     if (!clientId || !redirectUri) {
-        return res.status(500).send(`
-            <h2>Google App Credentials Not Configured</h2>
-            <p>Please open the <code>.env</code> file in the root directory (<code>d:\\Prism Startup\\.env</code>) and add your keys:</p>
-            <pre style="background: #f4f4f4; padding: 15px; border-radius: 5px;">
+        const isVercel = process.env.VERCEL || process.env.NODE_ENV === 'production';
+
+        if (isVercel) {
+            return res.status(500).send(`
+                <h2>Google App Credentials Not Configured</h2>
+                <p>You are running in a production/Vercel environment. Please go to your Vercel Project Dashboard &rarr; <b>Settings</b> &rarr; <b>Environment Variables</b> and add:</p>
+                <pre style="background: #f4f4f4; padding: 15px; border-radius: 5px;">
+GOOGLE_CLIENT_ID=your_client_id_here
+GOOGLE_CLIENT_SECRET=your_client_secret_here
+GOOGLE_REDIRECT_URI=https://your-vercel-domain.vercel.app/auth/google/callback
+                </pre>
+                <p>After adding the variables, you must <b>Redeploy</b> your Vercel application for them to take effect!</p>
+                <a href="/login">&larr; Back to login</a>
+            `);
+        } else {
+            return res.status(500).send(`
+                <h2>Google App Credentials Not Configured</h2>
+                <p>Please open the <code>.env</code> file in the root directory (<code>d:\\Prism Startup\\.env</code>) and add your keys:</p>
+                <pre style="background: #f4f4f4; padding: 15px; border-radius: 5px;">
 GOOGLE_CLIENT_ID=your_client_id_here
 GOOGLE_CLIENT_SECRET=your_client_secret_here
 GOOGLE_REDIRECT_URI=http://localhost:3000/auth/google/callback
-            </pre>
-            <p>Then restart the server.</p>
-            <a href="/login">&larr; Back to login</a>
-        `);
+                </pre>
+                <p>Then restart the server.</p>
+                <a href="/login">&larr; Back to login</a>
+            `);
+        }
     }
 
     const scope = encodeURIComponent('email profile https://www.googleapis.com/auth/drive.readonly');
