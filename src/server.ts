@@ -7,7 +7,7 @@ import connectPgSimple from 'connect-pg-simple';
 import { initDB, pool } from './database';
 import { searchSlack, getRecentMessages } from './services/slack';
 import { searchNotion } from './services/notion';
-import { searchGoogleDrive } from './services/googleDrive';
+import { searchGoogleDrive, searchGmail } from './services/google';
 import axios from 'axios';
 
 // Load .env only in local development
@@ -131,12 +131,22 @@ app.get('/search', requireAuth, async (req, res) => {
     if (!query) return res.render('index', { user, results: null, query: '' });
 
     try {
-        const [slackResults, notionResults, googleDriveResults] = await Promise.all([
+        const [slackResults, notionResults, googleDriveResults, gmailResults] = await Promise.all([
             searchSlack(query, user.slack_access_token),
             searchNotion(query, user.notion_access_token),
-            user.google_access_token ? searchGoogleDrive(query, user.google_access_token) : Promise.resolve([])
+            user.google_access_token ? searchGoogleDrive(query, user.google_access_token) : Promise.resolve([]),
+            user.google_access_token ? searchGmail(query, user.google_access_token) : Promise.resolve([])
         ]);
-        res.render('index', { user, results: { slack: slackResults, notion: notionResults, googleDrive: googleDriveResults }, query });
+        res.render('index', {
+            user,
+            results: {
+                slack: slackResults,
+                notion: notionResults,
+                googleDrive: googleDriveResults,
+                gmail: gmailResults
+            },
+            query
+        });
     } catch (error) {
         console.error("Search failed:", error);
         res.render('index', { user, results: null, error: "Search failed.", query });
@@ -356,7 +366,7 @@ GOOGLE_REDIRECT_URI=http://localhost:3000/auth/google/callback
         }
     }
 
-    const scope = encodeURIComponent('email profile https://www.googleapis.com/auth/drive.readonly');
+    const scope = encodeURIComponent('email profile https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/gmail.readonly');
     const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}&access_type=offline&prompt=consent`;
     res.redirect(url);
 });
