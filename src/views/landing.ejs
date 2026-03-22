@@ -6,21 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prism - The Unified Knowledge Hub</title>
     <link rel="stylesheet" href="/style.css">
-    <script>
-        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/insights/script.js"></script>
-    <script>
-        // Set theme immediately to avoid FOUC
-        (function () {
-            const savedTheme = localStorage.getItem('theme');
-            const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-            let currentTheme = savedTheme || (prefersLight ? 'light' : 'dark');
-            if (currentTheme === 'light') {
-                document.documentElement.setAttribute('data-theme', 'light');
-            }
-        })();
-    </script>
+    
     <style>
         .hero {
             padding: 80px 0 60px;
@@ -78,26 +64,7 @@
                 <img id="logo-img" class="prism-logo" src="/02_prism_full_color_dark.jpg" alt="Prism Logo" style="height: 32px; width: auto; object-fit: contain;">
             </a>
             <div class="flex items-center gap-6">
-                <!-- Theme Toggle Button -->
-                <button id="theme-toggle" aria-label="Toggle Theme"
-                    style="background: transparent; border: 1px solid var(--border); padding: 8px; border-radius: 50%; color: var(--text-1); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; cursor: pointer; transition: all 0.2s;">
-                    <svg id="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                    <svg id="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                </button>
+                
                 <a href="/login"
                     style="color: var(--text-2); text-decoration: none; font-weight: 500;">Login</a>
                 <a href="/signup" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">Sign Up</a>
@@ -238,42 +205,7 @@
         </footer>
     </main>
 
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const toggleBtn = document.getElementById('theme-toggle');
-            const iconSun = document.getElementById('icon-sun');
-            const iconMoon = document.getElementById('icon-moon');
-
-            function updateIcon(theme) {
-                const logoImg = document.getElementById('logo-img');
-                if (theme === 'light') {
-                    if (iconSun) iconSun.style.display = 'none';
-                    if (iconMoon) iconMoon.style.display = 'block';
-                    if (logoImg) logoImg.src = '/01_prism_full_color.jpg';
-                } else {
-                    if (iconSun) iconSun.style.display = 'block';
-                    if (iconMoon) iconMoon.style.display = 'none';
-                    if (logoImg) logoImg.src = '/02_prism_full_color_dark.jpg';
-                }
-            }
-
-            updateIcon(document.documentElement.getAttribute('data-theme') || 'dark');
-
-            if (toggleBtn) {
-                toggleBtn.addEventListener('click', () => {
-                    let newTheme = 'dark';
-                    if (document.documentElement.getAttribute('data-theme') !== 'light') {
-                        newTheme = 'light';
-                        document.documentElement.setAttribute('data-theme', 'light');
-                    } else {
-                        document.documentElement.removeAttribute('data-theme');
-                    }
-                    localStorage.setItem('theme', newTheme);
-                    updateIcon(newTheme);
-                });
-            }
-        });
-    </script>
+    
 </body>
 
 </html>

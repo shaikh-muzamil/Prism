@@ -57,20 +57,7 @@
   --notion-text: #000000;
 }
 
-[data-theme="light"] {
-  --bg-app:       #ede9fe;
-  --bg-card:      #ffffff;
-  --bg-card-glass: rgba(255, 255, 255, 0.85);
-  --bg-input:     #f5f3ff;
-  --border:       #ddd6fe;
-  --border-focus: #7c3aed;
-  
-  --text-1:       #0f172a;
-  --text-2:       #4c1d95;
-  --text-3:       #6d28d9;
-  
-  --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.05);
-}
+
 
 /* Global Reset & Base */
 * {
@@ -556,9 +543,7 @@ nav .logo {
     border-radius: 8px; /* So it looks like a premium app icon if box is visible */
     transition: mix-blend-mode 0.2s ease, filter 0.2s ease;
 }
-[data-theme="light"] .prism-logo {
-    mix-blend-mode: multiply; /* Instantly turns the white background completely transparent! */
-}
+
 
 /* AI Answer Strip */
 .ai-strip {
