@@ -57,7 +57,7 @@
                                 <% results.slack.forEach(item=> { %>
                                     <a href="<%= item.permalink %>" target="_blank" class="card card-interactive">
                                         <div class="flex items-center justify-between mb-4">
-                                            <strong class="font-semibold" style="color: #fff;">
+                                            <strong class="font-semibold" style="color: var(--text-1);">
                                                 <%= item.user %>
                                             </strong>
                                             <span class="badge badge-slack">#<%= item.channel %></span>
@@ -93,7 +93,7 @@
                                             <span style="font-size: 1.25rem;">
                                                 <%= item.icon || '📄' %>
                                             </span>
-                                            <strong class="font-semibold" style="font-size: 1.1rem; color: #fff;">
+                                            <strong class="font-semibold" style="font-size: 1.1rem; color: var(--text-1);">
                                                 <%= item.title %>
                                             </strong>
                                         </div>
@@ -127,7 +127,7 @@
                                             <span style="font-size: 1.25rem; display: flex;">
                                                 📄
                                             </span>
-                                            <strong class="font-semibold" style="font-size: 1.1rem; color: #fff;">
+                                            <strong class="font-semibold" style="font-size: 1.1rem; color: var(--text-1);">
                                                 <%= item.title %>
                                             </strong>
                                         </div>
@@ -156,7 +156,7 @@
                                 <% results.gmail.forEach(item=> { %>
                                     <a href="<%= item.url %>" target="_blank" class="card card-interactive">
                                         <div class="flex items-center gap-3 mb-2">
-                                            <strong class="font-semibold" style="font-size: 1.05rem; color: #fff;">
+                                            <strong class="font-semibold" style="font-size: 1.05rem; color: var(--text-1);">
                                                 <%= item.title %>
                                             </strong>
                                         </div>
@@ -186,7 +186,7 @@
                             <% recents.forEach(item=> { %>
                                 <a href="<%= item.permalink %>" target="_blank" class="card card-interactive">
                                     <div class="flex items-center justify-between mb-4">
-                                        <strong class="font-semibold" style="color: #fff;">
+                                        <strong class="font-semibold" style="color: var(--text-1);">
                                             <%= item.user %>
                                         </strong>
                                         <span class="badge badge-slack">#<%= item.channel %></span>

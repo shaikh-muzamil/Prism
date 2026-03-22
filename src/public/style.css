@@ -546,3 +546,11 @@ nav .logo {
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+/* Logo Blending */
+.prism-logo {
+    border-radius: 8px; /* So it looks like a premium app icon if box is visible */
+    transition: mix-blend-mode 0.2s ease, filter 0.2s ease;
+}
+[data-theme="light"] .prism-logo {
+    mix-blend-mode: multiply; /* Instantly turns the white background completely transparent! */
+}
