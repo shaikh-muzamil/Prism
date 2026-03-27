@@ -8,10 +8,12 @@ interface User {
     slack_access_token?: string;
 }
 
-// Fetch recent messages by trying several common words
-// (Slack search doesn't support * wildcards — this is the reliable workaround)
+// Fetch recent messages by using a date query
+// (Slack search ignores * wildcards and common stop words like "the" or "is")
 async function fetchRecentSlackMessages(accessToken: string) {
-    const queries = ['the', 'is', 'we', 'update', 'team'];
+    // 'before:tomorrow' is a trick to match effectively all messages,
+    // and since we sort by timestamp desc, it yields the most recent 10.
+    const queries = ['before:tomorrow', 'after:2020-01-01', 'has:reaction', 'has:link'];
     const seen = new Set<string>();
     const messages: any[] = [];
 
