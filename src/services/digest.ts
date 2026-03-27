@@ -1,4 +1,4 @@
-import { getRecentMessages } from './slack';
+import { searchSlack } from './slack';
 import Groq from 'groq-sdk';
 
 interface User {
@@ -8,6 +8,30 @@ interface User {
     slack_access_token?: string;
 }
 
+// Fetch recent messages by trying several common words
+// (Slack search doesn't support * wildcards — this is the reliable workaround)
+async function fetchRecentSlackMessages(accessToken: string) {
+    const queries = ['the', 'is', 'we', 'update', 'team'];
+    const seen = new Set<string>();
+    const messages: any[] = [];
+
+    for (const q of queries) {
+        try {
+            const results = await searchSlack(q, accessToken);
+            for (const m of results) {
+                if (!seen.has(m.ts)) {
+                    seen.add(m.ts);
+                    messages.push(m);
+                }
+            }
+            if (messages.length >= 10) break;
+        } catch { /* try next query */ }
+    }
+
+    return messages.slice(0, 10);
+}
+
+
 export async function generateDigestForUser(user: User): Promise<string | null> {
     if (!user.slack_access_token) return null;
 
@@ -16,7 +40,7 @@ export async function generateDigestForUser(user: User): Promise<string | null> 
 
     try {
         // Fetch recent Slack messages
-        const messages = await getRecentMessages(user.slack_access_token);
+        const messages = await fetchRecentSlackMessages(user.slack_access_token);
         if (!messages || messages.length === 0) return null;
 
         // Build context from messages
