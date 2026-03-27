@@ -8,6 +8,7 @@ import { initDB, pool } from './database';
 import { searchSlack, getRecentMessages } from './services/slack';
 import { searchNotion } from './services/notion';
 import { searchGoogleDrive, searchGmail } from './services/google';
+import { synthesizeAnswer } from './services/ai';
 import axios from 'axios';
 
 // Load .env only in local development
@@ -128,24 +129,29 @@ app.get('/search', requireAuth, async (req, res) => {
     const query = req.query.q as string;
     const user = (req.session as any).user;
 
-    if (!query) return res.render('index', { user, results: null, query: '' });
+    if (!query) return res.render('index', { user, results: null, aiSummary: null, query: '' });
 
     try {
         const [slackResults, notionResults] = await Promise.all([
             searchSlack(query, user.slack_access_token),
             searchNotion(query, user.notion_access_token)
         ]);
+
+        // Run AI synthesis concurrently after results are fetched
+        const aiSummary = await synthesizeAnswer(query, slackResults, notionResults);
+
         res.render('index', {
             user,
             results: {
                 slack: slackResults,
                 notion: notionResults
             },
+            aiSummary,
             query
         });
     } catch (error) {
         console.error("Search failed:", error);
-        res.render('index', { user, results: null, error: "Search failed.", query });
+        res.render('index', { user, results: null, aiSummary: null, error: "Search failed.", query });
     }
 });
 

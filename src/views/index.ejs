@@ -43,6 +43,53 @@
                 </form>
             </section>
 
+            <% if (typeof aiSummary !== 'undefined' && aiSummary) { %>
+                <div class="ai-summary-card" style="
+                    max-width: 900px;
+                    margin: 0 auto 2rem auto;
+                    background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(59, 130, 246, 0.08));
+                    border: 1px solid rgba(139, 92, 246, 0.3);
+                    border-radius: 16px;
+                    padding: 1.5rem 2rem;
+                    position: relative;
+                    overflow: hidden;
+                ">
+                    <!-- Glow accent -->
+                    <div style="
+                        position: absolute; top: 0; left: 0; right: 0; height: 2px;
+                        background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.8), rgba(59, 130, 246, 0.8), transparent);
+                    "></div>
+
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.875rem;">
+                        <span style="font-size: 1.1rem;">✨</span>
+                        <span style="
+                            font-size: 0.75rem;
+                            font-weight: 700;
+                            letter-spacing: 0.1em;
+                            text-transform: uppercase;
+                            background: linear-gradient(90deg, #a78bfa, #60a5fa);
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                            background-clip: text;
+                        ">Prism AI Answer</span>
+                    </div>
+
+                    <p style="
+                        color: var(--text-1, #e2e8f0);
+                        font-size: 0.975rem;
+                        line-height: 1.7;
+                        margin: 0 0 1rem 0;
+                    "><%= aiSummary %></p>
+
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="opacity: 0.4;">
+                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+                        </svg>
+                        <span style="font-size: 0.7rem; color: var(--text-muted, #64748b); opacity: 0.7;">Synthesized by Gemini · Based on your connected sources</span>
+                    </div>
+                </div>
+            <% } %>
+
             <% if (results) { %>
                 <div class="results-grid mt-8">
                     <!-- Slack Column -->
