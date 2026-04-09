@@ -141,6 +141,11 @@ app.get('/demo', async (req, res) => {
     });
 });
 
+// Pricing Route
+app.get('/pricing', (req, res) => {
+    res.render('pricing', { user: (req.session as any).user || null });
+});
+
 // Search Route
 app.get('/search', requireAuth, async (req, res) => {
     const query = req.query.q as string;
