@@ -146,41 +146,13 @@ app.get('/pricing', (req, res) => {
     res.render('pricing', { user: (req.session as any).user || null });
 });
 
-// Search Route
-app.get('/search', requireAuth, async (req, res) => {
+// Search Route (Legacy Redirect)
+app.get('/search', requireAuth, (req, res) => {
     const query = req.query.q as string;
-    const user = (req.session as any).user;
-
-    if (!query) return res.render('index', { user, results: null, aiSummary: null, query: '' });
-
-    try {
-        const [slackResults, notionResults] = await Promise.all([
-            searchSlack(query, user.slack_access_token),
-            searchNotion(query, user.notion_access_token)
-        ]);
-
-        // Run AI synthesis concurrently after results are fetched
-        const aiSummary = await synthesizeAnswer(query, slackResults, notionResults);
-
-        // Track search metrics asynchronously (fire and forget)
-        pool.query(
-            `INSERT INTO search_metrics (user_id, query, slack_results_count, notion_results_count) 
-             VALUES ($1, $2, $3, $4)`,
-            [user.id, query, slackResults.length, notionResults.length]
-        ).catch(err => console.error('Error logging search metrics:', err));
-
-        res.render('index', {
-            user,
-            results: {
-                slack: slackResults,
-                notion: notionResults
-            },
-            aiSummary,
-            query
-        });
-    } catch (error) {
-        console.error("Search failed:", error);
-        res.render('index', { user, results: null, aiSummary: null, error: "Search failed.", query });
+    if (query) {
+        res.redirect('/?q=' + encodeURIComponent(query));
+    } else {
+        res.redirect('/');
     }
 });
 
