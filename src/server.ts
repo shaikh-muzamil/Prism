@@ -184,6 +184,42 @@ app.get('/search', requireAuth, async (req, res) => {
     }
 });
 
+// AJAX Search Route
+app.get('/api/search', requireAuth, async (req, res) => {
+    const query = req.query.q as string;
+    const user = (req.session as any).user;
+
+    if (!query) return res.json({ results: null, aiSummary: null, query: '' });
+
+    try {
+        const [slackResults, notionResults] = await Promise.all([
+            searchSlack(query, user.slack_access_token),
+            searchNotion(query, user.notion_access_token)
+            // Add Google later here
+        ]);
+
+        const aiSummary = await synthesizeAnswer(query, slackResults, notionResults);
+
+        pool.query(
+            `INSERT INTO search_metrics (user_id, query, slack_results_count, notion_results_count) 
+             VALUES ($1, $2, $3, $4)`,
+            [user.id, query, slackResults.length, notionResults.length]
+        ).catch(err => console.error('Error logging search metrics:', err));
+
+        res.json({
+            results: {
+                slack: slackResults,
+                notion: notionResults
+            },
+            aiSummary,
+            query
+        });
+    } catch (error: any) {
+        console.error("API Search failed:", error);
+        res.status(500).json({ error: "Search failed.", details: error.message });
+    }
+});
+
 // Auth Routes
 app.get('/login', (req, res) => {
     res.render('login');

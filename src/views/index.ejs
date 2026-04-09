@@ -27,11 +27,15 @@
                     Seamlessly search across your Slack conversations and Notion documents in one sleek place.
                 </p>
 
-                <form action="/search" method="GET" class="search-container">
+                <form id="search-form" class="search-container">
                     <div class="search-input-wrapper">
-                        <input type="text" name="q" class="search-input" placeholder="What are you looking for...?"
-                            value="<%= query %>" required autocomplete="off">
-                        <button type="submit" class="btn btn-primary" style="margin: 4px;">
+                        <input type="text" id="search-input" name="q" class="search-input" placeholder="What are you looking for...?"
+                            value="<%= typeof query !== 'undefined' ? query : '' %>" required autocomplete="off">
+                        <!-- Cmd+K Hint -->
+                        <div class="search-shortcut">
+                            <kbd>Cmd</kbd><kbd>K</kbd>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="margin: 4px; z-index: 2;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="11" cy="11" r="8"></circle>
@@ -43,151 +47,183 @@
                 </form>
             </section>
 
-            <% if (typeof aiSummary !== 'undefined' && aiSummary) { %>
-                <div class="ai-summary-card" style="
-                    max-width: 900px;
-                    margin: 0 auto 2rem auto;
-                    background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(59, 130, 246, 0.08));
-                    border: 1px solid rgba(139, 92, 246, 0.3);
-                    border-radius: 16px;
-                    padding: 1.5rem 2rem;
-                    position: relative;
-                    overflow: hidden;
-                ">
-                    <!-- Glow accent -->
-                    <div style="
-                        position: absolute; top: 0; left: 0; right: 0; height: 2px;
-                        background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.8), rgba(59, 130, 246, 0.8), transparent);
-                    "></div>
-
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.875rem;">
-                        <span style="font-size: 1.1rem;">✨</span>
-                        <span style="
-                            font-size: 0.75rem;
-                            font-weight: 700;
-                            letter-spacing: 0.1em;
-                            text-transform: uppercase;
-                            background: linear-gradient(90deg, #a78bfa, #60a5fa);
-                            -webkit-background-clip: text;
-                            -webkit-text-fill-color: transparent;
-                            background-clip: text;
-                        ">Prism AI Answer</span>
+            <!-- Container for purely dynamic Ajax rendering -->
+            <div id="results-container" style="max-width: 900px; margin: 0 auto;">
+                <% if (typeof recents !=='undefined' && recents && recents.length > 0 && !(typeof query !== 'undefined' && query)) { %>
+                    <div class="grid-column-title">
+                        <span style="display: flex; align-items: center;"><img src="https://cdn.simpleicons.org/slack/E01E5A" width="22" height="22" alt="Slack"></span>
+                        <h3 class="font-heading">Recent Slack Activity</h3>
                     </div>
-
-                    <p style="
-                        color: var(--text-1, #e2e8f0);
-                        font-size: 0.975rem;
-                        line-height: 1.7;
-                        margin: 0 0 1rem 0;
-                    "><%= aiSummary %></p>
-
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="opacity: 0.4;">
-                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
-                        </svg>
-                        <span style="font-size: 0.7rem; color: var(--text-muted, #64748b); opacity: 0.7;">Synthesized by Gemini · Based on your connected sources</span>
-                    </div>
-                </div>
-            <% } %>
-
-            <% if (results) { %>
-                <div class="results-grid mt-8">
-                    <!-- Slack Column -->
-                    <div class="column">
-                        <div class="grid-column-title">
-                            <span style="display: flex; align-items: center;"><img src="https://cdn.simpleicons.org/slack/E01E5A" width="22" height="22" alt="Slack"></span>
-                            <h3 class="font-heading">Slack Results</h3>
-                        </div>
-
-                        <% if (results.slack && results.slack.length> 0) { %>
-                            <div class="flex flex-col gap-4">
-                                <% results.slack.forEach(item=> { %>
-                                    <a href="<%= item.permalink %>" target="_blank" class="card card-interactive" style="border-left: 3px solid var(--slack);">
-                                        <div class="flex items-center justify-between mb-4">
-                                            <strong class="font-semibold" style="color: var(--text-1);">
-                                                <%= item.user %>
-                                            </strong>
-                                            <span class="badge badge-slack">#<%= item.channel %></span>
-                                        </div>
-                                        <p class="text-secondary mb-4 line-clamp-3" style="font-size: 0.95rem;">
-                                            <%= item.text %>
-                                        </p>
-                                        <span class="text-muted text-sm">
-                                            <%= new Date(item.ts * 1000).toLocaleDateString() %>
-                                        </span>
-                                    </a>
-                                    <% }) %>
-                            </div>
-                            <% } else { %>
-                                <div class="card-glass text-center text-muted">
-                                    No results found in Slack.
+                    <div class="flex flex-col gap-4">
+                        <% recents.forEach(item=> { %>
+                            <a href="<%= item.permalink %>" target="_blank" class="card card-interactive" style="border-left: 3px solid var(--slack);">
+                                <div class="flex items-center justify-between mb-4">
+                                    <strong class="font-semibold" style="color: var(--text-1);">
+                                        <%= item.user %>
+                                    </strong>
+                                    <span class="badge badge-slack">#<%= item.channel %></span>
                                 </div>
-                                <% } %>
+                                <p class="text-secondary mb-4 line-clamp-3" style="font-size: 0.95rem;">
+                                    <%= item.text %>
+                                </p>
+                            </a>
+                        <% }) %>
                     </div>
+                <% } %>
+            </div>
+            
+            <script>
+                // 1. Global Cmd+K Listener
+                document.addEventListener('keydown', (e) => {
+                    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                        e.preventDefault();
+                        document.getElementById('search-input').focus();
+                    }
+                });
 
-                    <!-- Notion Column -->
-                    <div class="column">
-                        <div class="grid-column-title">
-                            <span style="display: flex; align-items: center;"><img src="https://cdn.simpleicons.org/notion/ffffff" width="22" height="22" alt="Notion"></span>
-                            <h3 class="font-heading">Notion Results</h3>
-                        </div>
+                const form = document.getElementById('search-form');
+                const input = document.getElementById('search-input');
+                const resultsContainer = document.getElementById('results-container');
+                let currentResults = null;
+                let currentAiSummary = null;
+                
+                // Helper to highlight terms
+                function highlightTerm(text, query) {
+                    if (!query || !text) return text;
+                    const terms = query.split(' ').filter(t => t.length > 2);
+                    if (terms.length === 0) return text;
+                    let result = text;
+                    terms.forEach(term => {
+                        const regex = new RegExp('(' + term + ')', 'gi');
+                        result = result.replace(regex, '<mark style="background: rgba(124,58,237,0.3); color: white; padding: 0 4px; border-radius: 4px;">$1</mark>');
+                    });
+                    return result;
+                }
 
-                        <% if (results.notion && results.notion.length> 0) { %>
-                            <div class="flex flex-col gap-4">
-                                <% results.notion.forEach(item=> { %>
-                                    <a href="<%= item.url %>" target="_blank" class="card card-interactive" style="border-left: 3px solid var(--notion);">
-                                        <div class="flex items-center gap-3 mb-4">
-                                            <span style="font-size: 1.25rem;">
-                                                <%= item.icon || '📄' %>
-                                            </span>
-                                            <strong class="font-semibold" style="font-size: 1.1rem; color: var(--text-1);">
-                                                <%= item.title %>
-                                            </strong>
-                                        </div>
-                                        <div class="flex gap-2">
-                                            <span class="badge badge-notion">
-                                                <%= item.object %>
-                                            </span>
-                                        </div>
-                                    </a>
-                                    <% }) %>
-                            </div>
-                            <% } else { %>
-                                <div class="card-glass text-center text-muted">
-                                    No results found in Notion.
-                                </div>
-                                <% } %>
-                    </div>
+                // 2. Fetch API Search
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const q = input.value.trim();
+                    if (!q) return;
 
-                    </div>
-                <% } else if (typeof recents !=='undefined' && recents && recents.length> 0) { %>
-                    <div style="max-width: 800px; margin: 60px auto 0;">
-                        <div class="grid-column-title">
-                            <span style="display: flex; align-items: center;"><img src="https://cdn.simpleicons.org/slack/E01E5A" width="22" height="22" alt="Slack"></span>
-                            <h3 class="font-heading">Recent Slack Activity</h3>
+                    // Update URL without reload
+                    window.history.pushState({}, '', '/?q=' + encodeURIComponent(q));
+
+                    // Render Skeleton
+                    resultsContainer.innerHTML = `
+                        <div class="card skeleton" style="height: 140px; margin-bottom: 2rem;"></div>
+                        <div class="tabs-container">
+                            <div class="tab skeleton" style="width: 60px; height: 35px;"></div>
+                            <div class="tab skeleton" style="width: 80px; height: 35px;"></div>
+                            <div class="tab skeleton" style="width: 80px; height: 35px;"></div>
                         </div>
                         <div class="flex flex-col gap-4">
-                            <% recents.forEach(item=> { %>
-                                <a href="<%= item.permalink %>" target="_blank" class="card card-interactive" style="border-left: 3px solid var(--slack);">
-                                    <div class="flex items-center justify-between mb-4">
-                                        <strong class="font-semibold" style="color: var(--text-1);">
-                                            <%= item.user %>
-                                        </strong>
-                                        <span class="badge badge-slack">#<%= item.channel %></span>
-                                    </div>
-                                    <p class="text-secondary mb-4 line-clamp-3" style="font-size: 0.95rem;">
-                                        <%= item.text %>
-                                    </p>
-                                    <span class="text-muted text-sm">
-                                        <%= new Date(parseFloat(item.ts) * 1000).toLocaleDateString() %>
-                                            <%= new Date(parseFloat(item.ts) * 1000).toLocaleTimeString([],
-                                                {hour: '2-digit' , minute:'2-digit'}) %>
-                                    </span>
-                                </a>
-                                <% }) %>
+                            <div class="card skeleton" style="height: 120px;"></div>
+                            <div class="card skeleton" style="height: 120px;"></div>
+                            <div class="card skeleton" style="height: 120px;"></div>
                         </div>
-                    </div>
-                    <% } %>
+                    `;
+
+                    try {
+                        const res = await fetch('/api/search?q=' + encodeURIComponent(q));
+                        const data = await res.json();
+                        currentResults = data.results;
+                        currentAiSummary = data.aiSummary;
+                        renderUI(q, 'all');
+                    } catch (err) {
+                        resultsContainer.innerHTML = '<div class="card-glass text-center text-red-400">Search Failed.</div>';
+                    }
+                });
+
+                // 3. Render unified UI with Tabs
+                function renderUI(queryText, activeTab) {
+                    if (!currentResults) return;
+
+                    let html = '';
+
+                    // AI Summary always on top
+                    if (currentAiSummary) {
+                        html += `
+                            <div class="ai-summary-card" style="
+                                background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(59, 130, 246, 0.08));
+                                border: 1px solid rgba(139, 92, 246, 0.3);
+                                border-radius: 16px;
+                                padding: 1.5rem 2rem;
+                                margin-bottom: 2rem;
+                                position: relative;
+                            ">
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.875rem;">
+                                    <span>✨</span>
+                                    <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #a78bfa;">Prism AI Answer</span>
+                                </div>
+                                <p style="color: #e2e8f0; line-height: 1.7; margin: 0;">${currentAiSummary}</p>
+                            </div>
+                        `;
+                    }
+
+                    // Tabs
+                    html += `
+                        <div class="tabs-container" id="results-tabs">
+                            <div class="tab ${activeTab === 'all' ? 'active' : ''}" onclick="renderUI('${queryText}', 'all')">All Results</div>
+                            <div class="tab ${activeTab === 'slack' ? 'active' : ''}" onclick="renderUI('${queryText}', 'slack')">Slack (${currentResults.slack?.length || 0})</div>
+                            <div class="tab ${activeTab === 'notion' ? 'active' : ''}" onclick="renderUI('${queryText}', 'notion')">Notion (${currentResults.notion?.length || 0})</div>
+                        </div>
+                        <div class="flex flex-col gap-4">
+                    `;
+
+                    // Compile items
+                    let items = [];
+                    if (activeTab === 'all' || activeTab === 'slack') {
+                        (currentResults.slack || []).forEach(i => items.push({ ...i, _type: 'slack' }));
+                    }
+                    if (activeTab === 'all' || activeTab === 'notion') {
+                        (currentResults.notion || []).forEach(i => items.push({ ...i, _type: 'notion' }));
+                    }
+
+                    if (items.length === 0) {
+                        html += '<div class="card-glass text-center text-muted py-12" style="border-radius: 16px;">No results found for this tab.</div>';
+                    } else {
+                        items.forEach(item => {
+                            if (item._type === 'slack') {
+                                html += `
+                                    <a href="${item.permalink}" target="_blank" class="card card-interactive" style="border-left: 3px solid var(--slack);">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <div class="flex items-center gap-2">
+                                                <img src="https://cdn.simpleicons.org/slack/E01E5A" width="16" height="16">
+                                                <strong class="font-semibold" style="color: white;">${item.user}</strong>
+                                            </div>
+                                            <span class="badge badge-slack">#${item.channel}</span>
+                                        </div>
+                                        <p class="text-secondary mb-2 line-clamp-3">${highlightTerm(item.text, queryText)}</p>
+                                    </a>
+                                `;
+                            } else if (item._type === 'notion') {
+                                html += `
+                                    <a href="${item.url}" target="_blank" class="card card-interactive" style="border-left: 3px solid var(--notion);">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <img src="https://cdn.simpleicons.org/notion/ffffff" width="16" height="16">
+                                            <span style="font-size: 1.25rem;">${item.icon || '📄'}</span>
+                                            <strong class="font-semibold" style="font-size: 1.1rem; color: white;">${highlightTerm(item.title, queryText)}</strong>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            <span class="badge badge-notion">${item.object}</span>
+                                        </div>
+                                    </a>
+                                `;
+                            }
+                        });
+                    }
+
+                    html += '</div>';
+                    resultsContainer.innerHTML = html;
+                }
+                
+                // If query is present on load, trigger search automatically
+                if (input.value.trim() && window.location.pathname === '/') {
+                    // Slight delay so the user sees the page frame load, then the skeleton takes over.
+                    setTimeout(() => { form.dispatchEvent(new Event('submit')); }, 100);
+                }
+            </script>
         </main>
 </body>
 
