@@ -620,12 +620,15 @@ nav .logo {
 .raycast-modal {
     width: 100%;
     max-width: 750px;
-    background: #1c1c1e;
-    border-radius: 12px;
-    box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08);
+    background: var(--bg-card-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft), var(--shadow-glow);
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    border: 1px solid var(--border);
 }
 
 .raycast-header {
@@ -695,7 +698,8 @@ nav .logo {
 
 .raycast-tab.active {
     color: #fff;
-    background: rgba(255,255,255,0.08);
+    background: rgba(124, 58, 237, 0.2);
+    border: 1px solid rgba(124, 58, 237, 0.3);
 }
 
 .raycast-list-group {
@@ -743,17 +747,19 @@ nav .logo {
 
 /* THE ACTIVE STATE */
 .raycast-active {
-    background: rgba(124, 58, 237, 0.4); /* Raycast uses grey, but a subtle brand tint is nice. Let's use strict raycast grey */
-    background: rgba(255,255,255,0.1);
+    background: rgba(124, 58, 237, 0.2);
+    border-radius: 6px;
+    box-shadow: inset 0 0 0 1px rgba(124, 58, 237, 0.3);
 }
 
 .raycast-active .raycast-item-title {
     color: #fff;
+    text-shadow: 0 0 8px rgba(124, 58, 237, 0.3);
 }
 .raycast-active .raycast-pill {
-    background: transparent;
-    color: rgba(255,255,255,0.8);
-    border-color: rgba(255,255,255,0.2);
+    background: rgba(124, 58, 237, 0.3);
+    color: #fff;
+    border-color: rgba(124, 58, 237, 0.5);
 }
 
 .raycast-ai-summary {

@@ -13,25 +13,26 @@
 </head>
 
 <body>
-    <!-- Deep Dark Raycast Background -->
-    <div style="position: fixed; inset: 0; background: #0f0f10; z-index: -1;"></div>
+    <!-- Background Effects -->
+    <div class="bg-glow"></div>
+    <div class="bg-glow-2"></div>
 
-    <main style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
+    <%- include('partials/header', { user: user }) %>
+
+    <main class="main-content container" style="display: flex; flex-direction: column; align-items: center; padding-top: 40px;">
         
         <!-- Raycast Modal Container -->
         <div class="raycast-modal">
             
             <!-- Modal Header (Input) -->
             <form id="search-form" class="raycast-header">
-                <input type="text" id="search-input" name="q" class="raycast-input" placeholder="Search across your apps..."
+                <input type="text" id="search-input" name="q" class="raycast-input" placeholder="Search Prism..."
                     value="<%= typeof query !== 'undefined' ? query : '' %>" required autocomplete="off" autofocus>
                 
-                <a href="/account" class="raycast-settings-icon" title="Settings">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                    </svg>
-                </a>
+                <!-- Cmd+K Hint -->
+                <div class="search-shortcut" style="right: 20px;">
+                    <kbd>Cmd</kbd><kbd>K</kbd>
+                </div>
             </form>
 
             <!-- Container for purely dynamic Ajax rendering -->
